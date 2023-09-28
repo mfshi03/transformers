@@ -24,6 +24,6 @@ This will be a naive implementation of the Transformer Architecture in PyTorch. 
 
 **Papers**
 
-[Attention is All you Need](https://arxiv.org/pdf/1706.03762.pdf)
-[BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding](https://arxiv.org/pdf/1810.04805.pdf)
-[Language Model are unsupervised learners](https://d4mucfpksywv.cloudfront.net/better-language-models/language-models.pdf)
+- [Attention is All you Need](https://arxiv.org/pdf/1706.03762.pdf)
+- [BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding](https://arxiv.org/pdf/1810.04805.pdf)
+- [Language Model are unsupervised learners](https://d4mucfpksywv.cloudfront.net/better-language-models/language-models.pdf)
