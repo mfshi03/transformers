@@ -31,3 +31,4 @@ This will be a naive implementation of the Transformer Architecture in PyTorch. 
 **Resources**
 
 - [hyunwoongko transformer](https://github.com/hyunwoongko/transformer)
+- [Positional Encoding](https://kazemnejad.com/blog/transformer_architecture_positional_encoding/)

@@ -18,7 +18,8 @@ class MultiHeadAttention(nn.Module):
         self.key_w = nn.Linear(dim, dim)
         self.val_w = nn.Linear(dim, dim)
         self.output_w = nn.Linear(dim, dim)
-    
+        
+    # Used to compute the concatenated attention heads computed from the query, key, value matrices 
     def scaled_dotp_attention(self, Q, K, V, mask = none):
         scores = torch.matmul(Q, K.transpose(-2, -1) / math.sqrt(self.d_k))
         if mask is not None:
