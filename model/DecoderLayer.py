@@ -19,7 +19,7 @@ class DecoderLayer(nn.Module):
         self.dropout= nn.dropout(dropout)
     
     def forward(self, resid, encoding_out, source_mask, target_mask):
-        attn_output = self.self_attn(x,x,x,target_mask)
+        attn_output = self.self_attn(resid, resid, resid,target_mask)
         resid = self.normal(resid + self.dropout(attn_output))
         attn_output = self.cross_attn(x, encoding_out, encoding_out, source_mask)
         resid = self.norm2(resid + self.dropout(attn_output))

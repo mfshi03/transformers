@@ -8,7 +8,7 @@ because the distances are consistent across time steps and because values are bo
 The distribution is the same as if you recorded the bits of increasing numbers.
 
 More info here: 
-https://kazemnejad.com/blog/transformer_architecture_positional_encoding/)
+https://kazemnejad.com/blog/transformer_architecture_positional_encoding/
 '''
 
 class PositionalEncoding(nn.Module):
