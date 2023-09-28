@@ -1,7 +1,7 @@
 import torch
-import torch.nn
+import torch.nn as nn
 
-class PositionalFeedForward(nn.module):
+class PositionalFeedForward(nn.Module):
     def __init__(self, dim, ff_dim):
             super(PositionalFeedForward, self).__init__()
             self.fc1 = nn.Linear(dim, ff_dim)

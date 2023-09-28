@@ -1,3 +1,10 @@
+import torch
+import torch.nn as nn
+
+from model.PositionalEncoding import PositionalEncoding
+from model.EncoderLayer import EncoderLayer
+from model.DecoderLayer import DecoderLayer
+
 class Transformer(nn.Module):
     def __init__(self, src_vocab_size, tgt_vocab_size, dim, n_heads, n_layers, ff_dim, max_seq_len, dropout):
         super(Transformer, self).__init__()
@@ -17,6 +24,7 @@ class Transformer(nn.Module):
         seq_length = tgt.size(1) 
         # Create an upper triangular matrix to prevent the model from attending to future tokens in the target sequence via causal masking.
         nopeak_mask = (1 - torch.triu(torch.ones(1, seq_length, seq_length), diagonal=1)).bool()
+        
         tgt_mask = tgt_mask & nopeak_mask
         return src_mask, tgt_mask
 
@@ -31,7 +39,7 @@ class Transformer(nn.Module):
 
         decoder_output = tgt_embedded
         for decoder_layer in self.decoder_layers:
-            decoder_output = dec_layer(decoder_output, encoder_output, src_mask, tgt_mask)
+            decoder_output = decoder_layer(decoder_output, encoder_output, src_mask, tgt_mask)
 
         output = self.fc(decoder_output)
         return output

@@ -1,3 +1,5 @@
+import torch
+import torch.nn as nn
 from model.MultiHeadedAttention import MultiHeadAttention
 from model.PositionalFeedForward import PositionalFeedForward
 
@@ -16,13 +18,13 @@ class DecoderLayer(nn.Module):
         self.norm1 = nn.LayerNorm(dim)
         self.norm2 = nn.LayerNorm(dim)
         self.norm3 = nn.LayerNorm(dim)
-        self.dropout= nn.dropout(dropout)
+        self.dropout= nn.Dropout(dropout)
     
     def forward(self, resid, encoding_out, source_mask, target_mask):
         attn_output = self.self_attn(resid, resid, resid,target_mask)
-        resid = self.normal(resid + self.dropout(attn_output))
-        attn_output = self.cross_attn(x, encoding_out, encoding_out, source_mask)
+        resid = self.norm1(resid + self.dropout(attn_output))
+        attn_output = self.cross_attn(resid, encoding_out, encoding_out, source_mask)
         resid = self.norm2(resid + self.dropout(attn_output))
-        ff_output = self.feed_forward(x)
+        ff_output = self.ff_net(resid)
         resid = self.norm3(resid + self.dropout(ff_output))
         return resid

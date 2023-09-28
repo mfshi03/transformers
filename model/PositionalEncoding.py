@@ -1,5 +1,6 @@
 import torch
-import torch.nn
+import torch.nn as nn
+import math
 
 '''
 The reason why positional encodings work is really elegant. 
@@ -22,7 +23,7 @@ class PositionalEncoding(nn.Module):
         pos_encoding[:, 0::2] = torch.sin(position * div_term)
         pos_encoding[:, 1::2] = torch.cos(position * div_term)
         
-        self.register_buffer('pe', pos_encoding.unsqueeze(0))
+        self.register_buffer('pos_encoding', pos_encoding.unsqueeze(0))
         
     def forward(self, x):
         return x + self.pos_encoding[:, :x.size(1)]

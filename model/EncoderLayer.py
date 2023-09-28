@@ -1,3 +1,6 @@
+import torch
+import torch.nn as nn
+from model.MultiHeadedAttention import MultiHeadAttention
 from model.PositionalFeedForward import PositionalFeedForward
 
 class EncoderLayer(nn.Module):
@@ -12,6 +15,6 @@ class EncoderLayer(nn.Module):
     def forward(self, resid, mask):
         attn_output = self.self_attn(resid, resid, resid, mask)
         resid = self.norm1(resid + self.dropout(attn_output))
-        ff_output = self.feed_forward(resid)
+        ff_output = self.ff_net(resid)
         resid = self.norm2(resid + self.dropout(ff_output))
         return resid
