@@ -15,7 +15,7 @@ This will be a naive implementation of the Transformer Architecture in PyTorch. 
     - [ ] Performing web scraping and parsing 
     - [ ] Add important labels
 
-- [ ] Complete core transformer classes and methods 10/10
+- [X] Complete core transformer classes and methods 10/10
 
 - [ ] Make a dataset loader module for running experiments to train our transformer on the custom dataset 10/20
 
@@ -32,3 +32,4 @@ This will be a naive implementation of the Transformer Architecture in PyTorch. 
 
 - [hyunwoongko transformer](https://github.com/hyunwoongko/transformer)
 - [Positional Encoding](https://kazemnejad.com/blog/transformer_architecture_positional_encoding/)
+- [nanoGPT Lecture repo](https://github.com/karpathy/ng-video-lecture)
