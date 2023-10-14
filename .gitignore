@@ -1,5 +1,5 @@
 /venv
-/weights
+weights/*
 __pycache__
 *.bin
 *.txt
