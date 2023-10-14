@@ -44,13 +44,12 @@ def get_batch(split):
 def generate(model, initial_seq, max_length=100):
     model.eval()
     with torch.no_grad():
-        input_seq = torch.tensor(encode(initial_seq)).unsqueeze(0).to(device)  # add batch dimension
+        input_seq = torch.tensor(encode(initial_seq)).unsqueeze(0).to(device)
         generated = input_seq.tolist()
 
         for _ in range(max_length - len(initial_seq)):
-            # Get the model's predictions
             output = model(input_seq, input_seq)
-            next_token = output.argmax(dim=-1)[:, -1].item()  # Take the last token (most recent prediction)
+            next_token = output.argmax(dim=-1)[:, -1].item()
             generated[0].append(next_token)
             input_seq = torch.tensor(generated).to(device)
 
