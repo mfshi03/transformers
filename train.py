@@ -41,22 +41,21 @@ def get_batch(split):
     x, y = x.to(device), y.to(device)
     return x, y
 
-
-def generate(model, src, max_length=100):
+def generate(model, initial_seq, max_length=100):
     model.eval()
     with torch.no_grad():
-        src = torch.tensor(encode(src), dtype=torch.long).unsqueeze(0).to(device)
-        tgt = torch.tensor([1]).to(device) 
+        input_seq = torch.tensor(encode(initial_seq)).unsqueeze(0).to(device)  # add batch dimension
+        generated = input_seq.tolist()
 
-        for _ in range(max_length):
-            output = model(src, tgt)
-            next_word = output.argmax(2)[:, -1].item()
-            tgt = torch.cat([tgt, torch.tensor([next_word], dtype=torch.long).to(device)], dim=1)
-            
-            if next_word == 2:
-                break
+        for _ in range(max_length - len(initial_seq)):
+            # Get the model's predictions
+            output = model(input_seq, input_seq)
+            next_token = output.argmax(dim=-1)[:, -1].item()  # Take the last token (most recent prediction)
+            generated[0].append(next_token)
+            input_seq = torch.tensor(generated).to(device)
 
-        return decode(tgt_sequence[0].cpu().numpy())
+        generated_seq = decode(generated[0])
+    return generated_seq
 
 
 X, Y = get_batch('train')
@@ -76,7 +75,7 @@ for epoch in range(100):
     loss.backward()
     optimizer.step()
     torch.save(transformer.state_dict(), f"weights/transformer_epoch_{epoch+1}.pth")
-    generated_sequence = generate(transformer, "What is an apple?")
+    generated_sequence = generate(transformer, "You are all resolved rather to die than to famish?")
     print(generated_sequence)
     print(f"Epoch: {epoch+1}, Loss: {loss.item()}")
 
