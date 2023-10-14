@@ -42,6 +42,23 @@ def get_batch(split):
     return x, y
 
 
+def generate(model, src, max_length=100):
+    model.eval()
+    with torch.no_grad():
+        src = torch.tensor(encode(src), dtype=torch.long).unsqueeze(0).to(device)
+        tgt = torch.tensor([1]).to(device) 
+
+        for _ in range(max_length):
+            output = model(src, tgt)
+            next_word = output.argmax(2)[:, -1].item()
+            tgt = torch.cat([tgt, torch.tensor([next_word], dtype=torch.long).to(device)], dim=1)
+            
+            if next_word == 2:
+                break
+
+        return decode(tgt_sequence[0].cpu().numpy())
+
+
 X, Y = get_batch('train')
 
 # Generate random sample data
@@ -58,4 +75,8 @@ for epoch in range(100):
     loss = criterion(output.contiguous().view(-1, tgt_vocab_size), tgt_data[:, 1:].contiguous().view(-1))
     loss.backward()
     optimizer.step()
+    torch.save(transformer.state_dict(), f"weights/transformer_epoch_{epoch+1}.pth")
+    generated_sequence = generate(transformer, "What is an apple?")
+    print(generated_sequence)
     print(f"Epoch: {epoch+1}, Loss: {loss.item()}")
+
