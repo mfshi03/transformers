@@ -19,6 +19,7 @@ class Transformer(nn.Module):
         self.dropout = nn.Dropout(dropout)
 
     def generate_mask(self, src, tgt):
+        device = src.device  # or tgt.device, assuming src and tgt are on the same device
         src_mask = (src != 0).unsqueeze(1).unsqueeze(2)
         tgt_mask = (tgt != 0).unsqueeze(1).unsqueeze(3)
         seq_length = tgt.size(1) 
