@@ -2,13 +2,13 @@ This will be a naive implementation of the Transformer Architecture in PyTorch. 
 
 **Preliminary Plan**
 
-- [ ] Read the following reference material on Github for implementation specifics by 9/17
+- [X] Read the following reference material on Github for implementation specifics by 9/17
     - [nanoGPT](https://github.com/karpathy/nanoGPT/tree/master), Andrej Karpathy's GPT2 Transformer implementation with a custom vocab
     - [X-Transformers](https://github.com/lucidrains/x-transformers), A transformer library built with many custom tooling from a variety of different papers
     - [HuggingFace Transformer's BERT](https://github.com/huggingface/transformers/tree/main/src/transformers/models/bert), HugginFace's implementation for BERT
 
 
-- [ ] Write a system design document for classes and necessary methods for implementation 9/20
+- [X] Write a system design document for classes and necessary methods for implementation 9/20
 
 - [ ] Build a custom text vocab dataset for training and validation. 10/1
     - [ ] Use tiktoken library to tokenize sentences and phrases. 
@@ -17,7 +17,7 @@ This will be a naive implementation of the Transformer Architecture in PyTorch. 
 
 - [X] Complete core transformer classes and methods 10/10
 
-- [ ] Make a dataset loader module for running experiments to train our transformer on the custom dataset 10/20
+- [X] Make a dataset loader module for running experiments to train our transformer on the custom dataset 10/20
 
 - [ ] Wrap-up experiment and document experimental results such as training performance 11/1
 
