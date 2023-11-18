@@ -35,7 +35,7 @@ dim = 512
 num_heads = 8
 num_layers = 6
 ff_dim  = 2048
-dropout = 0.1
+dropout = 0.2
 
 transformer = Transformer(src_vocab_size, tgt_vocab_size, dim, num_heads, num_layers, ff_dim , block_size, dropout)
 
@@ -123,7 +123,6 @@ def generate_topk(model, initial_seq, max_length=100, k=40, temperature=0.15):
         
     return generated_seq
 
-'''
 X, Y = get_batch('train')
 
 # Generate random sample data
@@ -132,7 +131,7 @@ tgt_data = Y[:tgt_vocab_size] # torch.randint(1, tgt_vocab_size, (64, block_size
 criterion = nn.CrossEntropyLoss(ignore_index=0)
 optimizer = optim.Adam(transformer.parameters(), lr=0.0001, betas=(0.9, 0.98), eps=1e-9)
 
-transformer.load_state_dict(torch.load(f"weights/transformer_epoch_1000.pth"))
+# transformer.load_state_dict(torch.load(f"weights/transformer_epoch_1000.pth"))
 for epoch in range(1000):
     transformer.train()
     optimizer.zero_grad()
@@ -147,7 +146,7 @@ for epoch in range(1000):
         torch.save(transformer.state_dict(), f"weights/transformer_epoch_mod.pth")
 
     print(f"Epoch: {epoch+1}, Loss: {loss.item()}")
-'''
+
 #torch.save(transformer.state_dict(), f"weights/transformer_epoch_2000.pth")
 transformer.load_state_dict(torch.load(f"weights/transformer_epoch_mod.pth"))
 transformer.to(device)
