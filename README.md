@@ -33,3 +33,13 @@ This will be a naive implementation of the Transformer Architecture in PyTorch. 
 - [hyunwoongko transformer](https://github.com/hyunwoongko/transformer)
 - [Positional Encoding](https://kazemnejad.com/blog/transformer_architecture_positional_encoding/)
 - [nanoGPT Lecture repo](https://github.com/karpathy/ng-video-lecture)
+- [Medium blog](https://towardsdatascience.com/build-your-own-transformer-from-scratch-using-pytorch-84c850470dcb)
+
+
+**Adapting for Code-Generation**
+- [AlphaCode Paper](https://arxiv.org/pdf/2203.07814.pdf)
+- [CodeBLEU Paper](https://arxiv.org/pdf/2009.10297.pdf)
+- [CodeBLEU Evals](https://github.com/microsoft/CodeXGLUE/blob/main/Code-Code/code-to-code-trans/evaluator/CodeBLEU/dataflow_match.py)
+- [CodeBERT Example](https://github.com/microsoft/CodeBERT/blob/master/CodeBERT/code2nl/run.py)
+- [Text2code dataset](https://huggingface.co/datasets/code_x_glue_tc_text_to_code)
+
