@@ -101,35 +101,56 @@ def repetition_loss(logits, target):
     repeat_probs = F.softmax(repeat_logits, dim=1)
     # Calculate CE loss to maximize probability of not repeating
     return F.cross_entropy(repeat_probs, torch.zeros_like(repeat_probs))
-
-def evaluate(model, criterion, itos, ind, batch_size=batch_size):
+'''
+def evaluate(model, ind, batch_size=batch_size):
     model.eval()
-    epoch_loss = 0
     batch_bleu = []
     with torch.no_grad():
-        for i in range(100):
-            src, trg = get_batch('val')  #Assuming the validation set is handled similarly to the training set
-            output = model(src, trg)
+        for src, trg in get_batch(val_loader):
+             #Assuming the validation set is handled similarly to the training set
+            output = transformer(src, trg[:, :-1])
+            output = output.contiguous().view(-1)
             #loss = criterion(output.contiguous().view(-1, tgt_vocab_size), trg[:, 1:].contiguous().view(-1))
             #epoch_loss += loss.item()
+            print(output)
+            
+            next_tokens = output.argmax().item()
+            batch_to_strings(torch.Tensor([next_tokens]))
+            batch_to_strings(trg)
+            trg_words = idx_to_word(trg, tokenizer)
+            output_words = idx_to_word(next_tokens, tokenizer)
+            print(trg_words)
+            print(output_words)
+            bleu = get_bleu(hypotheses=output_words.split(), reference=trg_words.split()) 
+            total_bleu.append(bleu)
 
-            total_bleu = []
-            for j in range(batch_size):
-                trg_words = idx_to_word(trg[j], itos)
-                output_words = output[j].max(dim=1)[1]
-                output_words = idx_to_word(output_words, itos)
-                bleu = get_bleu(hypotheses=output_words.split(), reference=trg_words.split()) 
+        total_bleu = sum(total_bleu) / len(total_bleu) if total_bleu else 0
+        print(f"Validation batch: {ind}, BLEU Score: {total_bleu}") #{loss.item()}")
+        with open("validation.txt", "a") as f:
+            f.write(f"Validation batch: {ind}, BLEU Score: {total_bleu}\n") #{loss.item()}
+        batch_bleu.append(total_bleu)
+'''
+def evaluate(model, ind, batch_size=batch_size):
+    model.eval()
+    total_bleu = []
+    with torch.no_grad():
+        for src, trg in get_batch(val_loader):
+            output = model(src, trg[:, :-1])  # get model predictions
+            output = output.argmax(dim=-1)  # get the highest probability token at each time step
+
+            # Convert entire sequences to strings
+            output_words = [idx_to_word(token, tokenizer) for token in output]
+            trg_words = [idx_to_word(token, tokenizer) for token in trg[:, 1:]]
+
+            # Calculate BLEU for each sequence in the batch
+            for hypothesis, reference in zip(output_words, trg_words):
+                bleu = get_bleu(hypotheses=hypothesis.split(), reference=reference.split()) 
                 total_bleu.append(bleu)
 
-            total_bleu = sum(total_bleu) / len(total_bleu) if total_bleu else 0
-            print(f"Validation batch: {(ind*100) + i}, BLEU Score: {total_bleu}") #{loss.item()}")
-            with open("eval2_bsize64_3.txt", "a") as f:
-                f.write(f"Batch: {i}, BLEU Score: {total_bleu}\n") #{loss.item()}
-            batch_bleu.append(total_bleu)
-
-    batch_bleu = sum(batch_bleu) / len(batch_bleu) if batch_bleu else 0
-    return epoch_loss / (len(val_data) // batch_size), batch_bleu
-
+        avg_bleu = sum(total_bleu) / len(total_bleu) if total_bleu else 0
+        print(f"Validation batch: {ind}, BLEU Score: {avg_bleu}")
+        with open("validation.txt", "a") as f:
+            f.write(f"Validation batch: {ind}, BLEU Score: {avg_bleu}\n")
 
 def generate_topk(model, initial_seq, max_length=100, k=5, temperature=1.0):
     model.eval()
@@ -140,7 +161,7 @@ def generate_topk(model, initial_seq, max_length=100, k=5, temperature=1.0):
         for _ in range(max_length - len(initial_seq)):
             output = model(input_seq, input_seq)               # [batch_size, seq_len, vocab_size]
             scaled_logits = output[0, -1, :] / temperature     # Apply temperature scaling
-            probs = F.softmax(scaled_logits, dim=-1)  # Get the probabilities for the last token in the sequence
+            probs = F.softmax(scaled_logits, dim=-1)           # Get the probabilities for the last token in the sequence
             top_k_probs, top_k_idx = torch.topk(probs, k=k, dim=-1) # Select top-k
             next_token = torch.multinomial(top_k_probs, num_samples=1).item() # Sample from the top-k tokens
             next_token = top_k_idx[next_token].item()
@@ -153,17 +174,17 @@ def generate_topk(model, initial_seq, max_length=100, k=5, temperature=1.0):
 
 criterion = nn.CrossEntropyLoss(ignore_index=0)
 optimizer = optim.Adam(transformer.parameters(), lr=0.0001, betas=(0.9, 0.98), eps=1e-9)
-#optimizer = optim.SGD(transformer.parameters(), lr=0.0001, momentum=0.9)
-
-
-transformer.train()
+transformer.load_state_dict(torch.load(f"weights/transformer_code_50.pth"))
+#transformer.train()
+evaluate(transformer, 0)
+'''
 for i in range(1000):  
     train_losses, test_losses, bleu_scores = [], [], []
     for x, y in get_batch(train_loader):
         src_data = x
         tgt_data = y
-        #print(batch_to_strings(x))
-        #print(batch_to_strings(y))
+        print(batch_to_strings(x))
+        print(batch_to_strings(y))
         optimizer.zero_grad()
         output = transformer(src_data, tgt_data[:, :-1])
         loss = criterion(output.contiguous().view(-1, tgt_vocab_size), tgt_data[:,1:].contiguous().view(-1))
@@ -181,7 +202,7 @@ for i in range(1000):
     print(generated_sequence)
     if i % 50 == 0:
         torch.save(transformer.state_dict(), f"weights/transformer_code_{i}.pth")
-
+'''
 torch.save(transformer.state_dict(), f"weights/transformer_code.pth")
 #transformer.load_state_dict(torch.load(f"weights/transformer_epoch_mod.pth"))
 #evaluate(transformer, criterion)
