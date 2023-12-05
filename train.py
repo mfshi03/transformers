@@ -107,37 +107,33 @@ def generate(model, initial_seq, max_length=100):
             next_token = output.argmax(dim=-1)[:, -1].item()
             generated[0].append(next_token)
             input_seq = torch.tensor(generated).to(device)
+            if input_seq.size(1) > block_size:
+                break
 
         generated_seq = decode(generated[0])
         
     return generated_seq
 '''
-'''
 def generate(model, initial_seq, max_length=100):
     model.eval()
     with torch.no_grad():
-        input_seq = torch.stack([encode(initial_seq)]).to(device)
-        #input_seq = torch.tensor(encode(initial_seq)).unsqueeze(0).to(device)
-        #tgt_seq = torch.tensor(encode("What work's, my countrymen, in hand? where go you")).unsqueeze(0).to(device)[:block_size]
-
-        generated = []
+        input_seq = torch.tensor(encode(initial_seq)).unsqueeze(0).to(device)
+        next_seq = input_seq
+        generated = input_seq.tolist()
 
         for _ in range(max_length - len(initial_seq)):
-            output = model(input_seq, input_seq[:, :-1])
-            # Select the last token's output
-            next_token = output[0,-1,:].argmax(dim=-1).item() # output[0, -1, :].argmax(dim=-1).item()
-            
-            generated.append(next_token)
-            # Append the next token to the input sequence
-            input_seq = torch.cat([input_seq, torch.tensor([[next_token]]).to(device)], dim=1)
-            #print(input_seq)
-            # Prevent sequence from getting too long
-            if input_seq.size(1) > block_size:
+            if len(next_seq) > block_size:
                 break
-
-        generated_seq = decode(generated)
+            output = model(input_seq, input_seq)
+            next_token = output.argmax(dim=-1)[:, -1].item()
+            generated[0].append(next_token)
+            next_seq = torch.tensor(generated).to(device)
+            
+        generated_seq = decode(generated[0])
         
     return generated_seq
+
+
 '''
 def generate(model, initial_seq, max_length=100):
     model.eval()
@@ -160,7 +156,7 @@ def generate(model, initial_seq, max_length=100):
     
         
     return output_words
-
+'''
 # helps estimate an arbitrarily accurate loss over either split using many batches
 @torch.no_grad()
 def estimate_loss(model:Transformer, eval_iters):
@@ -292,7 +288,7 @@ output_words = idx_to_word(output_words, itos)
 bleu = get_bleu(hypotheses=output_words.split(), reference=trg_words.split()) 
 total_bleu.append(bleu)
 
-generated_sequence =  generate(transformer, input_text, max_length=200)
+generated_sequence =  generate(transformer, input_text, max_length=100)
 end_time = time.time()
 print(input_text)
 
