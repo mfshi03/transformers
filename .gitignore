@@ -3,4 +3,4 @@ weights/*
 __pycache__
 *.bin
 *.pickle
-input.txt
+data/*.txt
