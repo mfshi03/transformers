@@ -5,7 +5,7 @@ count = 0
 for data in dataset:
     if count > 50000:
         break
-    with open("code.txt", "a") as f:
+    with open("code-samples.txt", "a") as f:
         s = data["nl"] + "[SEP]" + data["code"] + "\n"
         f.write(s)
 
