@@ -27,6 +27,10 @@ This will be a naive implementation of the Transformer Architecture in PyTorch. 
 - [Attention is All you Need](https://arxiv.org/pdf/1706.03762.pdf)
 - [BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding](https://arxiv.org/pdf/1810.04805.pdf)
 - [Language Model are unsupervised learners](https://d4mucfpksywv.cloudfront.net/better-language-models/language-models.pdf)
+- [Evaluating Large Language Models Trained on Code](https://arxiv.org/pdf/2107.03374.pdf)
+- [StarCoder](https://arxiv.org/pdf/2305.06161.pdf)
+- [CodeLlama](https://arxiv.org/pdf/2308.12950.pdf)
+- [CodeT5](https://arxiv.org/pdf/2109.00859v1.pdf)
 
 **Resources**
 
