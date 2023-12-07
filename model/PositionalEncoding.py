@@ -6,7 +6,7 @@ import math
 The reason why positional encodings work is really elegant. 
 The sinuisoidal function used is expressive enough to represent these encodings
 because the distances are consistent across time steps and because values are bounded.
-The distribution is the same as if you recorded the bits of increasing numbers.
+The distribution is the same as if you recorded the bits of increasing integers.
 
 More info here: 
 https://kazemnejad.com/blog/transformer_architecture_positional_encoding/
