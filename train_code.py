@@ -186,9 +186,10 @@ def generate_topk(model, initial_seq, max_length=100, k=5, temperature=1.0):
         
     return generated_seq
 
+transformer.load_state_dict(torch.load(f"weights/transformer_code_50.pth"))
 criterion = nn.CrossEntropyLoss(ignore_index=0)
 optimizer = optim.Adam(transformer.parameters(), lr=0.0001, betas=(0.9, 0.98), eps=1e-9)
-
+'''
 for i in range(epochs):  
     transformer.train() 
     train_losses, test_losses, bleu_scores = [], [], []
@@ -216,11 +217,10 @@ for i in range(epochs):
     # print(generated_sequence)
     if i % 50 == 0:
         torch.save(transformer.state_dict(), f"weights/transformer_code_{i}.pth")
+'''
 
-
-evaluate(transformer)
-torch.save(transformer.state_dict(), f"weights/transformer_code_final.pth")
-#transformer.load_state_dict(torch.load(f"weights/transformer_epoch_mod.pth"))
+evaluate(transformer, criterion)
+#torch.save(transformer.state_dict(), f"weights/transformer_code_final.pth")
 #evaluate(transformer, criterion)
 
 start_time = time.time()
