@@ -9,6 +9,10 @@ To test your model, run run_inference.py and change your model weights on this l
 
 Examples:
 
+![Example](imgs/example.png)
+
+BLEU Score during Training:
+![BLEU](imgs/bleu.png)
 
 
 **Preliminary Plan**
