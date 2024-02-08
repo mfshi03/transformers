@@ -144,7 +144,7 @@ def evaluate(model, criterion, batch_size=batch_size):
     model.eval()
     val_losses, total_bleu = [], []
     with torch.no_grad():
-        for src, trg in get_batch(val_loader):
+        for src, trg in get_batch(test_loader):
             output = transformer(src, trg[:, :-1])
             loss = criterion(output.contiguous().view(-1, tgt_vocab_size), trg[:,1:].contiguous().view(-1))
             

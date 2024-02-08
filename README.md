@@ -1,4 +1,9 @@
-This will be a naive implementation of the Transformer Architecture in PyTorch. Transformers address problems in natural language processing through the use of self-attention. This allows the Transformer to understand patterns in linear sequences and reason about them by learning long-range patterns in text. 
+This will be a naive implementation of the Transformer Architecture in PyTorch. Transformers address problems in natural language processing through the use of self-attention. This allows the Transformer to understand patterns in linear sequences and reason about them by learning long-range patterns in text.
+
+
+**How to use**
+
+Experiment for code-generation in train_code.py 
 
 **Code**
 
@@ -44,6 +49,7 @@ BLEU Score during Training:
 - [StarCoder](https://arxiv.org/pdf/2305.06161.pdf)
 - [CodeLlama](https://arxiv.org/pdf/2308.12950.pdf)
 - [CodeT5](https://arxiv.org/pdf/2109.00859v1.pdf)
+- [Auto-Formalization w/ LLMs](https://proceedings.neurips.cc/paper_files/paper/2022/file/d0c6bc641a56bebee9d985b937307367-Paper-Conference.pdf)
 
 **Adapting for Code-Generation**
 - [AlphaCode Paper](https://arxiv.org/pdf/2203.07814.pdf)
